@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Canteen - Pre Order</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f2f9fd;color:#263238}
+header{background:linear-gradient(135deg,#70cef5,#28a9e0);color:#fff;padding:24px 6%;border-radius:0 0 28px 28px;box-shadow:0 5px 18px #c8e8f5}
+.header-inner{max-width:1050px;margin:auto}
+.logo{font-size:25px;font-weight:800}.tagline{font-size:14px;margin-top:5px}
+.container{max-width:1050px;margin:auto;padding:22px 6% 45px}
+.card{background:#fff;border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+h2{font-size:19px;color:#168dcc;margin-bottom:18px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{font-size:14px;font-weight:bold}
+input[type=text]{width:100%;padding:13px;border:1px solid #dce5ea;border-radius:11px;margin-top:7px;font-size:15px;outline:none}
+input[type=text]:focus{border-color:#35b2e7}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.menu{border:1px solid #e2edf2;border-radius:17px;padding:17px;min-height:190px;display:flex;flex-direction:column;justify-content:space-between}
+.icon{font-size:38px}.menu h3{font-size:17px;margin-top:5px}.price{font-weight:800;color:#168dcc;margin:7px 0}.stock{font-size:12px;color:#78909c}
+.qty{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.qty button{width:36px;height:36px;border:0;border-radius:50%;background:#58bee9;color:#fff;font-size:22px;cursor:pointer}
+.qty span{font-size:18px;font-weight:bold}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.slot input{display:none}
+.slot-box{display:block;border:2px solid #dfe8ed;border-radius:14px;padding:16px;text-align:center;cursor:pointer}
+.slot input:checked+.slot-box{border-color:#24aae2;background:#e9f8ff;color:#1288c4}
+.slot-box small{display:block;color:#78909c;margin-top:6px}
+.summary{background:#eaf8ff;border-radius:15px;padding:16px;margin-top:18px}
+.row{display:flex;justify-content:space-between;margin:7px 0}
+.total{font-size:21px;font-weight:800;color:#168dcc}
+.order{width:100%;border:0;border-radius:15px;padding:16px;background:#148dcc;color:#fff;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 5px 12px #c6e7f5}
+.order:hover{background:#087bb4}
+.result{display:none}.success{background:#e8f9ef;color:#198754;padding:14px;border-radius:12px;font-weight:bold;margin-bottom:15px}
+.detail{padding:12px 0;border-bottom:1px solid #edf1f3}
+.detail:last-child{border-bottom:0}
+.note{font-size:13px;color:#78909c;margin-top:-8px;margin-bottom:15px}
+@media(max-width:700px){
+ header{padding:20px 18px}.container{padding:16px 14px 35px}
+ .form-grid,.menu-grid,.slot-grid{grid-template-columns:1fr}
+ .menu{min-height:155px}.card{padding:18px;border-radius:17px}
+}
+@media(min-width:701px) and (max-width:900px){
+ .menu-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="header-inner">
+  <div class="logo">🍴 Smart Canteen</div>
+  <div class="tagline">Pre-order makanan sekolah • Cepat, mudah, tanpa antre</div>
+ </div>
+</header>
+
+<main class="container">
+
+<section class="card">
+ <h2>👤 Data Pemesan</h2>
+ <div class="form-grid">
+  <div>
+   <label for="nama">Nama Siswa</label>
+   <input id="nama" type="text" placeholder="Masukkan nama siswa">
+  </div>
+  <div>
+   <label for="kelas">Kelas</label>
+   <input id="kelas" type="text" placeholder="Contoh: X-2">
+  </div>
+ </div>
+</section>
+
+<section class="card">
+ <h2>🍱 Pilih Menu</h2>
+ <div class="menu-grid">
+
+  <div class="menu">
+   <div><div class="icon">🍗</div><h3>Nasi Ayam</h3><div class="price">Rp15.000</div><div class="stock">Stok: <span id="stock0">10</span></div></div>
+   <div class="qty"><button onclick="changeQty(0,-1)">−</button><span id="qty0">0</span><button onclick="changeQty(0,1)">+</button></div>
+  </div>
+
+  <div class="menu">
+   <div><div class="icon">🍳</div><h3>Nasi Goreng</h3><div class="price">Rp12.000</div><div class="stock">Stok: <span id="stock1">10</span></div></div>
+   <div class="qty"><button onclick="changeQty(1,-1)">−</button><span id="qty1">0</span><button onclick="changeQty(1,1)">+</button></div>
+  </div>
+
+  <div class="menu">
+   <div><div class="icon">🍜</div><h3>Mie Goreng</h3><div class="price">Rp10.000</div><div class="stock">Stok: <span id="stock2">15</span></div></div>
+   <div class="qty"><button onclick="changeQty(2,-1)">−</button><span id="qty2">0</span><button onclick="changeQty(2,1)">+</button></div>
+  </div>
+
+ </div>
+ <div class="summary">
+  <div class="row"><span>Total Porsi</span><b id="totalQty">0</b></div>
+  <div class="row"><span>Total Bayar</span><span class="total" id="totalPrice">Rp0</span></div>
+ </div>
+</section>
+
+<section class="card">
+ <h2>🕐 Pilih Sesi Pengambilan</h2>
+ <p class="note">Setiap sesi memiliki kapasitas maksimal <b>8 porsi</b>.</p>
+ <div class="slot-grid">
+
+  <label class="slot">
+   <input type="radio" name="slot" value="09.45-09.55">
+   <span class="slot-box"><b>09.45 - 09.55</b><small>Kapasitas: 8 porsi</small></span>
+  </label>
+
+  <label class="slot">
+   <input type="radio" name="slot" value="10.15-10.25">
+   <span class="slot-box"><b>10.15 - 10.25</b><small>Kapasitas: 8 porsi</small></span>
+  </label>
+
+  <label class="slot">
+   <input type="radio" name="slot" value="10.45-10.55">
+   <span class="slot-box"><b>10.45 - 10.55</b><small>Kapasitas: 8 porsi</small></span>
+  </label>
+
+ </div>
+</section>
+
+<button class="order" onclick="order()">🛒 Pesan Sekarang</button>
+
+<section class="card result" id="result">
+ <div class="success">✅ Pesanan berhasil dicatat!</div>
+ <h2>📋 Ringkasan Pesanan</h2>
+ <p id="customer"></p>
+ <div id="details"></div>
+ <div class="summary">
+  <div class="row"><span>Total Porsi</span><b id="resultQty"></b></div>
+  <div class="row"><span>Total Bayar</span><span class="total" id="resultPrice"></span></div>
+  <div class="row"><span>Sesi Pengambilan</span><b id="resultSlot"></b></div>
+ </div>
+</section>
+
+</main>
+
+<script>
+const names=["Nasi Ayam","Nasi Goreng","Mie Goreng"];
+const prices=[15000,12000,10000];
+const stocks=[10,10,15];
+const qty=[0,0,0];
+
+// Menyimpan jumlah porsi yang sudah masuk ke tiap sesi
+const slotUsed=[0,0,0];
+const slotCapacity=8;
+
+function rupiah(n){return "Rp"+n.toLocaleString("id-ID")}
+
+function changeQty(i,change){
+ let next=qty[i]+change;
+ if(next<0)return;
+ if(next>stocks[i]){alert("Stok "+names[i]+" tidak cukup!");return}
+ qty[i]=next;
+ document.getElementById("qty"+i).textContent=qty[i];
+ document.getElementById("stock"+i).textContent=stocks[i]-qty[i];
+ calculate();
+}
+
+function calculate(){
+ let totalQty=0,totalPrice=0;
+ for(let i=0;i<qty.length;i++){
+  totalQty+=qty[i];
+  totalPrice+=qty[i]*prices[i];
+ }
+ document.getElementById("totalQty").textContent=totalQty;
+ document.getElementById("totalPrice").textContent=rupiah(totalPrice);
+ return {totalQty,totalPrice};
+}
+
+function order(){
+ const nama=document.getElementById("nama").value.trim();
+ const kelas=document.getElementById("kelas").value.trim();
+ const selected=document.querySelector('input[name="slot"]:checked');
+ const totals=calculate();
+
+ if(!nama){alert("Nama siswa harus diisi!");return}
+ if(!kelas){alert("Kelas harus diisi!");return}
+ if(totals.totalQty===0){alert("Pilih minimal satu makanan!");return}
+ if(!selected){alert("Pilih sesi pengambilan!");return}
+
+ const slotIndex=[...document.querySelectorAll('input[name="slot"]')].indexOf(selected);
+
+ // Satu pesanan tidak boleh membuat sesi melebihi 8 porsi
+ if(slotUsed[slotIndex]+totals.totalQty>slotCapacity){
+  const sisa=slotCapacity-slotUsed[slotIndex];
+  alert("Sesi ini tidak cukup. Sisa kapasitas hanya "+sisa+" porsi.");
+  return;
+ }
+
+ slotUsed[slotIndex]+=totals.totalQty;
+
+ document.getElementById("customer").innerHTML="<b>"+nama+"</b> ("+kelas+")";
+
+ let html="";
+ for(let i=0;i<qty.length;i++){
+  if(qty[i]>0){
+   html+=`<div class="detail"><b>${names[i]}</b><br>${qty[i]} porsi × ${rupiah(prices[i])}<br><b>${rupiah(qty[i]*prices[i])}</b></div>`;
+  }
+ }
+ document.getElementById("details").innerHTML=html;
+ document.getElementById("resultQty").textContent=totals.totalQty+" porsi";
+ document.getElementById("resultPrice").textContent=rupiah(totals.totalPrice);
+ document.getElementById("resultSlot").textContent=selected.value;
+
+ document.getElementById("result").style.display="block";
+ document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+</script>
+</body>
+</html>
